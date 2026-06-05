@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Spring MVC</title>
+</head>
+
+<body>
+	<h2>New Employee</h2>
+	<form th:action="@{/saveemp}" th:object="${employee}" method="post">
+
+		<div>
+			<label>Name:</label><br>
+			<input type="text" th:field="*{name}" />
+		</div>
+		<div>
+			<label>Salary:</label><br>
+			<input type="text" th:field="*{salary}" />
+		</div>
+		<input type="submit" value="Add Employee">
+	</form>
+</body>
+
+</html>
