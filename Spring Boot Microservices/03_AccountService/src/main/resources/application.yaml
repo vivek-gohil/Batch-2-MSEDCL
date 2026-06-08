@@ -1,0 +1,26 @@
+spring:
+    application:
+        name: "account-service"
+    datasource:
+        username: root
+        password: root123
+        url: jdbc:mysql://localhost:3306/account_db
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    profiles:
+        active:
+            - "uat"
+server:
+    port: 8181
+logging:
+    file:
+        name: logs/accounts.log
+build:
+    version: "2.0"
+account:
+    message: "Welcome to MSEDCL bank account reated REST API"
+    contactDetails:
+        name: "Prajakta"
+        email: "prajakta@msedcl.in"
+    onCallSupport:
+        - 1122334455
+        - 7788990066

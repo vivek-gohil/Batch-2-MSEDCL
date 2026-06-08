@@ -2,6 +2,7 @@ package com.msedcl.main.account.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,22 +14,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.msedcl.main.account.common.ApiResponse;
+import com.msedcl.main.account.dto.AccountContactDTO;
 import com.msedcl.main.account.dto.AccountRequestDTO;
 import com.msedcl.main.account.dto.AccountResponseDTO;
 import com.msedcl.main.account.dto.BalanceUpdateRequestDTO;
 import com.msedcl.main.account.service.AccountService;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@AllArgsConstructor
 @RestController
 @RequestMapping("/accountsapi")
 public class AccountController {
 
 	private AccountService accountService;
+	@Value("${build.version}")
+	private String buildVersion;
+	private AccountContactDTO accountContractDTO;
+
+	public AccountController(AccountService accountService, AccountContactDTO accountContactDTO) {
+		super();
+		this.accountService = accountService;
+		this.accountContractDTO = accountContactDTO;
+	}
+
+	@GetMapping("contact-details")
+	public ResponseEntity<AccountContactDTO> printAccountContactDetails() {
+		return ResponseEntity.status(HttpStatus.OK).body(accountContractDTO);
+	}
+
+	@GetMapping("build-version")
+	public ResponseEntity<String> printBuildVersion() {
+		return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+	}
 
 	/**
 	 * Create Account
@@ -50,6 +69,7 @@ public class AccountController {
 	 */
 	@GetMapping("accounts/account/{accountId}")
 	public ResponseEntity<ApiResponse<AccountResponseDTO>> getAccountById(@PathVariable int accountId) {
+		log.info("Request Received To Fetch Account By AccountId :: " + accountId);
 		return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<AccountResponseDTO>("FOUND",
 				"Account Details Retrived Successfully!", accountService.getAccountById(accountId)));
 	}

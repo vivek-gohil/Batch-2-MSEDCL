@@ -44,9 +44,10 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public AccountResponseDTO getAccountById(int accountId) {
-
+		log.info("Searching Account Details");
 		Optional<Account> optionlAccount = accountRepository.findById(accountId);
 		if (optionlAccount.isPresent()) {
+			log.info("Found!!");
 			CustomerResponseDTO customerResponseDTO = customerRESTClient
 					.getCustomerByCustomerId(optionlAccount.get().getCustomerId());
 			log.info(customerResponseDTO.toString());

@@ -2,6 +2,8 @@ package com.msedcl.main.transaction.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,21 +13,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.msedcl.main.transaction.common.ApiResponse;
+import com.msedcl.main.transaction.dto.TransactionContactDTO;
 import com.msedcl.main.transaction.dto.TransactionRequestDTO;
 import com.msedcl.main.transaction.dto.TransactionResponseDTO;
 import com.msedcl.main.transaction.service.TransactionService;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequestMapping("transactionsapi")
-@AllArgsConstructor
 public class TransactionController {
 
-	private TransactionService transactionService;
+	private final TransactionService transactionService;
+	private TransactionContactDTO transactionContactDTO;
+	@Value("${build.version}")
+	private String buildVersion;
+
+	public TransactionController(TransactionService transactionService, TransactionContactDTO transactionContactDTO) {
+		super();
+		this.transactionService = transactionService;
+		this.transactionContactDTO = transactionContactDTO;
+	}
+
+	@GetMapping("contact-details")
+	public ResponseEntity<TransactionContactDTO> printCustomerContactDetails() {
+		return ResponseEntity.status(HttpStatus.OK).body(transactionContactDTO);
+	}
+
+	@GetMapping("build-version")
+	public ResponseEntity<String> printBuildVersion() {
+		return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+	}
 
 	/**
 	 * Deposit Money
