@@ -2,6 +2,7 @@ package com.msedcl.main;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.msedcl.main.domain.Person;
 
@@ -17,23 +18,22 @@ public class StreamsMain {
 
 		System.out.println();
 
-		// Using Streams - filter
-		names.stream().filter((name) -> !name.equals("Bahubali")).forEach((name) -> System.out.println(name));
+		names.stream().filter((name) -> {
+			if (!name.equals("Bahubali")) {
+				return true;
+			} else {
+				return false;
+			}
+		}).forEach((name) -> System.out.println(name));
 
-		// Creating person class objects
-		Person person1 = new Person("Vivek", "Gohil", 36);
-		Person person2 = new Person("Trupti", "Acharekar", 38);
-		Person person3 = new Person("Samarth", "Patil", 10);
-		Person person4 = new Person("Gurubux", "Gill", 30);
+		System.out.println();
 
-		// Storing person objects into List
-		List<Person> people = Arrays.asList(person1, person2, person3, person4);
+		names.stream().filter((name) -> !name.equals("Bahubali")).forEach(n -> System.out.println(n));
 
-		// Print first name and last name of a person from list
-		// except Samarth
-		people.stream()
-			.filter((p) -> !p.getFirstName().equals("Samarth"))
-			.forEach((p) -> System.out.println(p.getFirstName() 
-										+ " " + p.getLastName()));
+		System.out.println();
+
+		List<String> filterd = names.stream().filter((name) -> !name.equals("Bahubali")).collect(Collectors.toList());
+
+		filterd.forEach(n -> System.out.println(n));
 	}
 }
