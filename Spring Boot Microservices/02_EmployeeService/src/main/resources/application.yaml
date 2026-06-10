@@ -1,0 +1,31 @@
+spring:
+    application:
+        name: "employee-service"
+    cloud:
+        openfeign:
+            circuitbreaker:
+                enabled: true
+eureka:
+    instance:
+        prefer-ip-address: true
+    client:
+        fetch-registry: true
+        register-with-eureka: true
+        service-url:
+            defaultZone: http://localhost:8070/eureka
+server:
+    port: 8181
+build:
+    version: "1.0"
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+resilience4j.circuitbreaker:
+    configs:
+        default:
+            slidingWindowSize: 10 #Circuit breaker will consider last 10 calls to calculate failure rate
+            permittedNumberOfCallsInHalfOpenState: 2 #Number of test calls allowed in HALF-OPEN state
+            failureRateThreshold: 50 #If failure % ≥ 50%, circuit will OPEN
+            waitDurationInOpenState: 10000 #How long circuit stays OPEN before trying again
